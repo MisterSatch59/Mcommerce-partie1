@@ -118,6 +118,15 @@ public class ProductController {
 
         return vMapMargeProduct;
     }
+    
+	// retourne la liste de tous les produits triés par nom croissant 
+    @GetMapping(value = "/ProduitsTries")
+	public List<Product> trierProduitsParOrdreAlphabetique() {
+
+    	List<Product> produits = productDao.findAllByOrderByNomAsc();
+
+		return produits;
+	}
 
 
 }
