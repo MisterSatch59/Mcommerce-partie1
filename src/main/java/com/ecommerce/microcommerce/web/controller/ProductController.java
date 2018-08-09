@@ -71,12 +71,7 @@ public class ProductController {
     @PostMapping(value = "/Produits")
 
     public ResponseEntity<Void> ajouterProduit(@Valid @RequestBody Product product) {
-
-        Product productAdded =  productDao.save(product);
-
-        if (productAdded == null)
-            return ResponseEntity.noContent().build();
-        
+    	
         if(product.getPrix()==0) {
         	throw new PrixException("Le prix du produit ne peut être 0");
         }
@@ -84,6 +79,11 @@ public class ProductController {
         	throw new PrixException("Le prix du produit ne peut pas être négatif! On ne vas pas payer les clients quand même!!");
         }
 
+        Product productAdded =  productDao.save(product);
+
+        if (productAdded == null)
+            return ResponseEntity.noContent().build();
+        
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
