@@ -2,6 +2,7 @@ package com.ecommerce.microcommerce.web.controller;
 
 import com.ecommerce.microcommerce.dao.ProductDao;
 import com.ecommerce.microcommerce.model.Product;
+import com.ecommerce.microcommerce.web.exceptions.PrixException;
 import com.ecommerce.microcommerce.web.exceptions.ProduitIntrouvableException;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -75,6 +76,13 @@ public class ProductController {
 
         if (productAdded == null)
             return ResponseEntity.noContent().build();
+        
+        if(product.getPrix()==0) {
+        	throw new PrixException("Le prix du produit ne peut être 0");
+        }
+        if(product.getPrix()<0) {
+        	throw new PrixException("Le prix du produit ne peut pas être négatif! On ne vas pas payer les clients quand même!!");
+        }
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
